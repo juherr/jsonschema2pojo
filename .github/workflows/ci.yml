@@ -25,6 +25,5 @@ jobs:
           checkout-fetch-depth: 0
           java-version: ${{ matrix.java_version }}
           java-distribution: temurin
-          maven-version: 3.8.7
       - name: Verify with Maven
-        run: mvn verify -B
+        run: ./mvnw verify -B
