@@ -20,6 +20,7 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.jsonschema2pojo.integration.util.CodeGenerationHelper.*;
 import static org.jsonschema2pojo.integration.util.ParcelUtils.*;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,10 +45,13 @@ import android.os.Parcelable;
 @Config(manifest=Config.NONE, sdk=23)
 public class ParcelableIT {
 
+    private static final boolean JAVA_8_OR_EARLIER = System.getProperty("java.specification.version").compareTo("1.9") < 0;
+
     @Rule public Jsonschema2PojoRule schemaRule = new Jsonschema2PojoRule();
 
     @Test
     public void parcelableTreeIsParcelable() throws ClassNotFoundException, IOException {
+        assumeTrue(JAVA_8_OR_EARLIER);
         Class<?> parcelableType = schemaRule.generateAndCompile("/schema/parcelable/parcelable-schema.json", "com.example",
                 config("parcelable", true))
                 .loadClass("com.example.ParcelableSchema");
@@ -62,6 +66,7 @@ public class ParcelableIT {
 
     @Test
     public void parcelableTypeDoesNotHaveAnyDuplicateImports() throws ClassNotFoundException, IOException {
+        assumeTrue(JAVA_8_OR_EARLIER);
         schemaRule.generate("/schema/parcelable/parcelable-schema.json", "com.example", config("parcelable", true));
         File generated = schemaRule.generated("com/example/ParcelableSchema.java");
         String content = FileUtils.readFileToString(generated);
@@ -75,6 +80,7 @@ public class ParcelableIT {
 
     @Test
     public void parcelableSuperclassIsUnparceled() throws ClassNotFoundException, IOException {
+        assumeTrue(JAVA_8_OR_EARLIER);
         // Explicitly set includeConstructors to false if default value changes in the future
         Class<?> parcelableType = schemaRule.generateAndCompile("/schema/parcelable/parcelable-superclass-schema.json", "com.example",
                 config("parcelable", true, "includeConstructors", false))
@@ -89,6 +95,7 @@ public class ParcelableIT {
 
     @Test
     public void parcelableDefaultConstructorDoesNotConflict() throws ClassNotFoundException, IOException {
+        assumeTrue(JAVA_8_OR_EARLIER);
         Class<?> parcelableType = schemaRule.generateAndCompile("/schema/parcelable/parcelable-superclass-schema.json", "com.example",
                 config("parcelable", true, "includeConstructors", true))
                 .loadClass("com.example.ParcelableSuperclassSchema");

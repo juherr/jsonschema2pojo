@@ -289,6 +289,24 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>jdk8</id>
+            <activation>
+                <jdk>(,1.8]</jdk>
+            </activation>
+            <properties>
+                <robolectric.version>3.8</robolectric.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>jdk9</id>
+            <activation>
+                <jdk>[1.9,)</jdk>
+            </activation>
+            <properties>
+                <robolectric.version>4.13</robolectric.version>
+            </properties>
+        </profile>
     </profiles>
 
     <dependencies>
@@ -505,7 +523,7 @@
             <dependency>
                <groupId>org.robolectric</groupId>
                <artifactId>robolectric</artifactId>
-               <version>3.8</version>
+               <version>${robolectric.version}</version>
                <scope>test</scope>
             </dependency>
             <dependency>
@@ -521,6 +539,11 @@
         <repository>
             <id>central</id>
             <url>https://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <!-- Some Android dependencies are only available on the Google repository -->
+            <id>google</id>
+            <url>https://maven.google.com</url>
         </repository>
     </repositories>
 
